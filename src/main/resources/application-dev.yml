@@ -1,22 +1,22 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/medibridge_user_dev?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: root
-    password: Prakash@1
+    url: ${DB_URL:jdbc:mysql://localhost:3306/medibridge_user_dev?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:Prakash@1}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: ${DDL_AUTO:update}
+    show-sql: ${SHOW_SQL:true}
     properties:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: OmprakashreddySaggam@gmail.com
-    password: frgizhomwrdyatoe
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:OmprakashreddySaggam@gmail.com}
+    password: ${MAIL_PASSWORD:frgizhomwrdyatoe}
     properties:
       mail:
         smtp:
@@ -34,9 +34,12 @@ management:
       enabled: false
 
 jwt:
-  secret: dev-secret-key-change-this-in-production-minimum-256-bits
-  expiration: 86400000
-  refresh-expiration: 604800000
+  secret: ${JWT_SECRET:MediBridge2026!Pr0duct1on$ecretK3y#H0sp1talManag3m3ntSyst3m@Secur1ty}
+  expiration: ${JWT_EXPIRATION:86400000}
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000}
+
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:4200,http://localhost:8080}
 
 logging:
   level:
