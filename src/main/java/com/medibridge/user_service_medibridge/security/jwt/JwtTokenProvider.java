@@ -34,20 +34,35 @@ public class JwtTokenProvider {
     }
 
     /**
-     * Generate access token
+     * Generate access token with default claims
      */
     public String generateAccessToken(UUID userId, String email, String role) {
+        return generateAccessToken(userId, email, role, null);
+    }
+
+    /**
+     * Generate access token with extra claims
+     */
+    public String generateAccessToken(UUID userId, String email, String role,
+            java.util.Map<String, Object> extraClaims) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpiration);
 
-        return Jwts.builder()
+        JwtBuilder builder = Jwts.builder()
                 .subject(userId.toString())
                 .claim("email", email)
                 .claim("role", role)
+                .claim("jti", UUID.randomUUID().toString()) // JWT ID for uniqueness
+                .claim("type", "access")
                 .issuedAt(now)
                 .expiration(expiryDate)
-                .signWith(getSigningKey())
-                .compact();
+                .signWith(getSigningKey());
+
+        if (extraClaims != null) {
+            extraClaims.forEach(builder::claim);
+        }
+
+        return builder.compact();
     }
 
     /**
@@ -57,8 +72,11 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtRefreshExpiration);
 
+        // Add random UUID to ensure uniqueness even for same user
         return Jwts.builder()
                 .subject(userId.toString())
+                .claim("jti", UUID.randomUUID().toString()) // JWT ID for uniqueness
+                .claim("type", "refresh")
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(getSigningKey())

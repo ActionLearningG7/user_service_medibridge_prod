@@ -27,6 +27,11 @@ public interface DoctorService {
     DoctorProfileResponse getDoctorProfile(UUID userId);
 
     /**
+     * Get doctor profile by email
+     */
+    DoctorProfileResponse getDoctorProfileByEmail(String email);
+
+    /**
      * Get all doctors (ADMIN only - includes unverified)
      */
     List<DoctorProfileResponse> getAllDoctors();

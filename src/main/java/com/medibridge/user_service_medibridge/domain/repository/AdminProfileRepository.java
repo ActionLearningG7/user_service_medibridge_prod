@@ -28,6 +28,8 @@ public interface AdminProfileRepository extends JpaRepository<AdminProfile, UUID
 
         Optional<AdminProfile> findByUserUserIdAndDeletedFalse(UUID userId);
 
+        Optional<AdminProfile> findByUserEmailAndDeletedFalse(String email);
+
         @Query("SELECT a FROM AdminProfile a WHERE a.user.userId = :userId AND a.deleted = false")
         Optional<AdminProfile> findByUserIdAndNotDeleted(@Param("userId") UUID userId);
 

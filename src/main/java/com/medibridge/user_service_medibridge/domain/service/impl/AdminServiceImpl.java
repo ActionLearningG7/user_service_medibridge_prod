@@ -50,6 +50,17 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional(readOnly = true)
+    public AdminProfileResponse getAdminProfileByEmail(String email) {
+        log.info("Fetching admin profile by email: {}", email);
+
+        AdminProfile profile = adminProfileRepository.findByUserEmailAndDeletedFalse(email)
+                .orElseThrow(() -> new ProfileNotFoundException("Admin profile not found for email: " + email));
+
+        return mapToResponse(profile);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<AdminProfileResponse> getAllAdmins() {
         log.info("Fetching all admin profiles");
 

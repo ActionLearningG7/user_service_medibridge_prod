@@ -2,7 +2,9 @@ package com.medibridge.user_service_medibridge.api.controller;
 
 import com.medibridge.user_service_medibridge.api.dto.response.AdminProfileResponse;
 import com.medibridge.user_service_medibridge.api.dto.response.ApiResponse;
+import com.medibridge.user_service_medibridge.api.dto.response.DoctorProfileResponse;
 import com.medibridge.user_service_medibridge.domain.service.AdminService;
+import com.medibridge.user_service_medibridge.domain.service.DoctorService;
 import com.medibridge.user_service_medibridge.util.constant.AdminLevel;
 import com.medibridge.user_service_medibridge.util.constant.UserStatus;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,6 +34,7 @@ import java.util.UUID;
 public class AdminController {
 
     private final AdminService adminService;
+    private final DoctorService doctorService;
 
     /**
      * Get current admin's profile
@@ -45,8 +48,8 @@ public class AdminController {
     public ResponseEntity<ApiResponse<AdminProfileResponse>> getMyProfile(
             Authentication authentication) {
 
-        UUID userId = UUID.fromString(authentication.getName());
-        AdminProfileResponse response = adminService.getAdminProfile(userId);
+        String email = authentication.getName();
+        AdminProfileResponse response = adminService.getAdminProfileByEmail(email);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
@@ -172,6 +175,21 @@ public class AdminController {
         Map<String, Object> response = adminService.getSystemStatistics();
         return ResponseEntity.ok(ApiResponse.success(response));
     }
+
+    /**
+     * Get all doctors (ADMIN only)
+     * 
+     * @return List of all doctors
+     */
+    @GetMapping("/doctors")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Get all doctors", description = "Get all doctors for admin management (ADMIN only)")
+    public ResponseEntity<ApiResponse<List<DoctorProfileResponse>>> getAllDoctors() {
+
+        List<DoctorProfileResponse> response = doctorService.getAllDoctors();
+        return ResponseEntity.ok(ApiResponse.success(response));
+    }
+
 
     /**
      * Delete admin profile (SUPER_ADMIN only)

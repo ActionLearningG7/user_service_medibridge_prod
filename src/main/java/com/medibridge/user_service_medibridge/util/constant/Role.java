@@ -5,11 +5,15 @@ package com.medibridge.user_service_medibridge.util.constant;
  * 
  * PATIENT: Default role for self-registered users
  * DOCTOR: Medical professionals (created by ADMIN only)
+ * PHLEBOTOMIST: Lab technicians for blood collection
+ * AMBULANCE_DRIVER: Emergency ambulance drivers
  * ADMIN: System administrators with highest privileges
  */
 public enum Role {
     PATIENT("ROLE_PATIENT", "Patient"),
     DOCTOR("ROLE_DOCTOR", "Doctor"),
+    PHLEBOTOMIST("ROLE_PHLEBOTOMIST", "Phlebotomist"),
+    AMBULANCE_DRIVER("ROLE_AMBULANCE_DRIVER", "Ambulance Driver"),
     ADMIN("ROLE_ADMIN", "Administrator");
 
     private final String authority;

@@ -22,6 +22,11 @@ public interface AdminService {
     AdminProfileResponse getAdminProfile(UUID userId);
 
     /**
+     * Get admin profile by email
+     */
+    AdminProfileResponse getAdminProfileByEmail(String email);
+
+    /**
      * Get all admins (SUPER_ADMIN only)
      */
     List<AdminProfileResponse> getAllAdmins();

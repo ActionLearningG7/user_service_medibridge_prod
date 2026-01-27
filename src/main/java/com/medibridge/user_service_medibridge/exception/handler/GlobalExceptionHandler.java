@@ -195,6 +195,29 @@ public class GlobalExceptionHandler {
                 return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(error);
         }
 
+        @ExceptionHandler(org.springframework.web.method.annotation.MethodArgumentTypeMismatchException.class)
+        public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatch(
+                        org.springframework.web.method.annotation.MethodArgumentTypeMismatchException ex,
+                        HttpServletRequest request) {
+
+                log.error("Invalid parameter type: {} - value: {}", ex.getName(), ex.getValue());
+
+                String message = String.format(
+                                "Invalid value '%s' for parameter '%s'. Expected type: %s",
+                                ex.getValue(),
+                                ex.getName(),
+                                ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : "unknown");
+
+                ErrorResponse error = ErrorResponse.builder()
+                                .status(HttpStatus.BAD_REQUEST.value())
+                                .error("Bad Request")
+                                .message(message)
+                                .path(request.getRequestURI())
+                                .build();
+
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        }
+
         @ExceptionHandler(Exception.class)
         public ResponseEntity<ErrorResponse> handleGenericException(
                         Exception ex, HttpServletRequest request) {

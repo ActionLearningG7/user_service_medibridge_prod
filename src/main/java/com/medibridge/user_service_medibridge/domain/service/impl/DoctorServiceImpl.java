@@ -221,6 +221,17 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     @Transactional(readOnly = true)
+    public DoctorProfileResponse getDoctorProfileByEmail(String email) {
+        log.info("Fetching doctor profile by email: {}", email);
+
+        DoctorProfile profile = doctorProfileRepository.findByUserEmailAndDeletedFalse(email)
+                .orElseThrow(() -> new ProfileNotFoundException("Doctor profile not found for email: " + email));
+
+        return mapToResponse(profile);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<DoctorProfileResponse> getAllDoctors() {
         log.info("Fetching all doctor profiles");
 
@@ -277,6 +288,8 @@ public class DoctorServiceImpl implements DoctorService {
         List<DoctorProfile> profiles = doctorProfileRepository
                 .findByAvailableForConsultationTrueAndVerificationStatusAndDeletedFalse(
                         VerificationStatus.VERIFIED);
+
+        System.out.println(profiles.toString());
 
         return profiles.stream()
                 .map(this::mapToResponse)

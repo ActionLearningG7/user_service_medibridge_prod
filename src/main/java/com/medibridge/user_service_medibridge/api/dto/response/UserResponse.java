@@ -29,6 +29,7 @@ public class UserResponse {
     private Boolean emailVerified;
     private Boolean phoneVerified;
     private Boolean twoFactorEnabled;
+    private Boolean isAdmin;
     private LocalDateTime lastLoginAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

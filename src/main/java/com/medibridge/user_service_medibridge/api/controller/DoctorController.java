@@ -69,8 +69,8 @@ public class DoctorController {
     public ResponseEntity<ApiResponse<DoctorProfileResponse>> getMyProfile(
             Authentication authentication) {
 
-        UUID userId = UUID.fromString(authentication.getName());
-        DoctorProfileResponse response = doctorService.getDoctorProfile(userId);
+        String email = authentication.getName();
+        DoctorProfileResponse response = doctorService.getDoctorProfileByEmail(email);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 

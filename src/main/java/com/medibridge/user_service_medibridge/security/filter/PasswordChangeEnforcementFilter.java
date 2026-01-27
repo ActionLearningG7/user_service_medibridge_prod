@@ -53,6 +53,7 @@ public class PasswordChangeEnforcementFilter extends OncePerRequestFilter {
             "/api/v1/auth/verify-email",
             "/api/v1/auth/forgot-password",
             "/api/v1/auth/reset-password",
+            "/api/v1/organization/**",
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/swagger-ui.html",
