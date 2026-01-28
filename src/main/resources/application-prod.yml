@@ -12,21 +12,22 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
-#  mail:
-#    host: ${SMTP_HOST}
-#    port: ${SMTP_PORT}
-#    username: ${SMTP_USER:}
-#    password: ${SMTP_PASS:}
-#    properties:
-#      mail:
-#        smtp:
-#          auth: false
-#          starttls:
-#            enable: false
-#            required: false
-#          connectiontimeout: 5000
-#          timeout: 5000
-#          writetimeout: 5000
+
+  mail:
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT}
+    username: ${SMTP_USER}
+    password: ${SMTP_PASS}
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+            required: false
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
 
 # Application-specific mail configuration
 app:
