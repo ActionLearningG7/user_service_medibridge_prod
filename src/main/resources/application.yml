@@ -39,7 +39,6 @@ eureka:
     prefer-ip-address: false
     lease-renewal-interval-in-seconds: 30
     lease-expiration-duration-in-seconds: 90
-    hostname: USER-SERVICE
 
 management:
   endpoints:
