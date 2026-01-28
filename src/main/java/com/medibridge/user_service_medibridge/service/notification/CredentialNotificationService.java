@@ -23,7 +23,7 @@ public class CredentialNotificationService {
 
     private final EmailService emailService;
 
-    @Value("${app.frontend.url:http://localhost:3000}")
+    @Value("${app.frontend.url:https://medibridge-prod.vercel.app/}")
     private String frontendUrl;
 
     @Value("${app.support.email:support@medibridge.com}")
