@@ -14,10 +14,10 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
 
   mail:
-    host: ${SMTP_HOST}
-    port: ${SMTP_PORT}
-    username: ${SMTP_USER}
-    password: ${SMTP_PASS}
+    host: maildev.railway.internal
+    port: 25
+    username: railway
+    password: eayiq7v2qszzmys3yosudldllp70z5hg
     properties:
       mail:
         smtp:
