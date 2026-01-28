@@ -27,7 +27,7 @@ spring:
         spring.json.trusted.packages: "*"
 
 server:
-  port: 8081
+  port: ${PORT:8081}
 
 eureka:
   client:
