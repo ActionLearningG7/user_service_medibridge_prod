@@ -87,9 +87,9 @@ public class SecurityConfig {
                                                                                            // organization endpoints
                                                 .permitAll()
 
-                                                // All other endpoints trust the gateway
-                                                // Gateway has already validated JWT and added X-User-* headers
-                                                .anyRequest().permitAll())
+                                                // All other endpoints require authentication
+                                                // Clients must include valid JWT in Authorization header
+                                                .anyRequest().authenticated())
 
                                 // Add JWT filter ONLY for auth endpoints
                                 // Other endpoints trust gateway headers

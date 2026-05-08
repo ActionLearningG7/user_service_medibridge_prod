@@ -1,6 +1,9 @@
 package com.medibridge.user_service_medibridge.domain.repository;
 
 import com.medibridge.user_service_medibridge.domain.entity.AmbulanceDriverProfile;
+import com.medibridge.user_service_medibridge.domain.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +19,44 @@ import java.util.UUID;
  */
 @Repository
 public interface AmbulanceDriverProfileRepository extends JpaRepository<AmbulanceDriverProfile, UUID> {
+
+    /**
+     * Find driver profile by user
+     */
+    Optional<AmbulanceDriverProfile> findByUser(User user);
+
+    /**
+     * Check if license number exists
+     */
+    boolean existsByLicenseNumber(String licenseNumber);
+
+    /**
+     * Find all active drivers
+     */
+    List<AmbulanceDriverProfile> findAllByIsActiveTrue();
+
+    /**
+     * Find drivers by active status with pagination
+     */
+    Page<AmbulanceDriverProfile> findByIsActive(Boolean isActive, Pageable pageable);
+
+    /**
+     * Find drivers by on-duty status with pagination
+     */
+    Page<AmbulanceDriverProfile> findByOnDutyStatus(String onDutyStatus, Pageable pageable);
+
+    /**
+     * Find drivers by active status and on-duty status with pagination
+     */
+    Page<AmbulanceDriverProfile> findByIsActiveAndOnDutyStatus(Boolean isActive, String onDutyStatus, Pageable pageable);
+
+    /**
+     * Search drivers by name or license number
+     */
+    @Query("SELECT p FROM AmbulanceDriverProfile p WHERE " +
+           "LOWER(p.user.username) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+           "LOWER(p.licenseNumber) LIKE LOWER(CONCAT('%', :search, '%'))")
+    Page<AmbulanceDriverProfile> searchDrivers(@Param("search") String search, Pageable pageable);
 
     /**
      * Find driver profile by user ID

@@ -33,11 +33,23 @@ public class AmbulanceDriverProfile {
     @Column(name = "profile_id", updatable = false, nullable = false)
     private UUID profileId;
 
-    @Column(name = "user_id", nullable = false, unique = true, updatable = false)
-    private UUID userId;
+    // One-to-One relationship with User
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    private User user;
 
     @Column(name = "organization_id", nullable = false)
     private UUID organizationId;
+
+    // Personal Information
+    @Column(name = "first_name", nullable = false, length = 100)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false, length = 100)
+    private String lastName;
+
+    @Column(name = "employee_id", length = 50)
+    private String employeeId;
 
     // Driver Information
     @Column(name = "license_number", nullable = false, unique = true, length = 50)

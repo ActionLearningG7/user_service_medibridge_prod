@@ -2,7 +2,7 @@ spring:
   application:
     name: user-service
   profiles:
-    active: prod
+    active: dev
 
   # Redis Configuration
   data:
@@ -29,16 +29,7 @@ spring:
 server:
   port: ${PORT:8081}
 
-eureka:
-  client:
-    service-url:
-      defaultZone: https://servermedibridgeprod-production.up.railway.app/eureka/
-    register-with-eureka: true
-    fetch-registry: true
-  instance:
-    prefer-ip-address: true
-    lease-renewal-interval-in-seconds: 30
-    lease-expiration-duration-in-seconds: 90
+
 
 management:
   endpoints:

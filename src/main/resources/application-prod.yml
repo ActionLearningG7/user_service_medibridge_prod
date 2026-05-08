@@ -74,3 +74,13 @@ logging:
     com.medibridge: DEBUG
     org.springframework.web: DEBUG
     org.hibernate.SQL: DEBUG
+eureka:
+  client:
+    service-url:
+      defaultZone: https://servermedibridgeprod-production.up.railway.app:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90

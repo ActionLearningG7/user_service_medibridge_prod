@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * Provides APIs for creating, updating, and managing ambulance drivers
  */
 @RestController
-@RequestMapping("/api/v1/admin/ambulance-drivers")
+@RequestMapping("/admin/ambulance-drivers")
 @RequiredArgsConstructor
 public class AdminAmbulanceDriverController {
 
@@ -55,7 +55,7 @@ public class AdminAmbulanceDriverController {
 
         // Create driver profile
         AmbulanceDriverProfile profile = AmbulanceDriverProfile.builder()
-                .userId(user.getUserId())
+                .user(user)
                 .organizationId(request.getOrganizationId())
                 .licenseNumber(request.getLicenseNumber())
                 .licenseExpiry(request.getLicenseExpiry())
@@ -80,7 +80,7 @@ public class AdminAmbulanceDriverController {
     /**
      * Get all ambulance drivers with pagination
      */
-    @GetMapping
+    @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<DriverResponse>> getAllDrivers(
             @RequestParam UUID organizationId,
@@ -88,7 +88,8 @@ public class AdminAmbulanceDriverController {
 
         Page<AmbulanceDriverProfile> profiles = driverProfileRepository.findAll(pageable);
         Page<DriverResponse> response = profiles.map(profile -> {
-            User user = userRepository.findById(profile.getUserId()).orElse(null);
+            assert profile.getUser().getId() != null;
+            User user = userRepository.findById(profile.getUser().getUserId()).orElse(null);
             return mapToResponse(user, profile);
         });
 
@@ -104,7 +105,7 @@ public class AdminAmbulanceDriverController {
         AmbulanceDriverProfile profile = driverProfileRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Driver not found"));
 
-        User user = userRepository.findById(profile.getUserId()).orElse(null);
+        User user = userRepository.findById(profile.getUser().getUserId()).orElse(null);
         return ResponseEntity.ok(mapToResponse(user, profile));
     }
 
@@ -147,7 +148,7 @@ public class AdminAmbulanceDriverController {
         }
 
         profile = driverProfileRepository.save(profile);
-        User user = userRepository.findById(profile.getUserId()).orElse(null);
+        User user = userRepository.findById(profile.getUser().getUserId()).orElse(null);
 
         return ResponseEntity.ok(mapToResponse(user, profile));
     }
@@ -176,7 +177,7 @@ public class AdminAmbulanceDriverController {
         }
 
         profile = driverProfileRepository.save(profile);
-        User user = userRepository.findById(profile.getUserId()).orElse(null);
+        User user = userRepository.findById(profile.getUser().getUserId()).orElse(null);
 
         return ResponseEntity.ok(mapToResponse(user, profile));
     }
@@ -194,7 +195,7 @@ public class AdminAmbulanceDriverController {
         driverProfileRepository.save(profile);
 
         // Also deactivate user account
-        User user = userRepository.findById(profile.getUserId()).orElse(null);
+        User user = userRepository.findById(profile.getUser().getUserId()).orElse(null);
         if (user != null) {
             user.setStatus(UserStatus.INACTIVE);
             userRepository.save(user);
@@ -215,7 +216,7 @@ public class AdminAmbulanceDriverController {
         AmbulanceDriverProfile profile = driverProfileRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Driver not found"));
 
-        User user = userRepository.findById(profile.getUserId())
+        User user = userRepository.findById(profile.getUser().getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         // Generate temporary password

@@ -41,6 +41,12 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     boolean existsByUsernameAndDeletedFalse(String username);
 
+    boolean existsByPhoneNumberAndDeletedFalse(String phoneNumber);
+
+    // Phone number queries
+    @Query("SELECT u FROM User u WHERE u.email = :email AND u.deleted = false")
+    Optional<User> findByEmailAndDeletedFalse(@Param("email") String email);
+
     // Role-based queries
     List<User> findByRole(Role role);
 

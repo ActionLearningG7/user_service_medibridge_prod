@@ -43,6 +43,9 @@ public class User implements org.springframework.data.domain.Persistable<UUID> {
     @Column(name = "email", nullable = false, unique = true, length = 100)
     private String email;
 
+    @Column(name = "phone_number", length = 20)
+    private String phoneNumber;
+
     @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
 
@@ -118,6 +121,22 @@ public class User implements org.springframework.data.domain.Persistable<UUID> {
 
     @Column(name = "credential_generated_by", length = 100)
     private String credentialGeneratedBy;
+
+    // One-to-One relationships to profile entities
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private PatientProfile patientProfile;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private DoctorProfile doctorProfile;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private PhlebotomistProfile phlebotomistProfile;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private AmbulanceDriverProfile ambulanceDriverProfile;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private AdminProfile adminProfile;
 
     // Audit fields
     @CreationTimestamp
