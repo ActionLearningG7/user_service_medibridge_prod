@@ -1,9 +1,12 @@
 spring:
   datasource:
-    url: ${DB_URL:jdbc:mysql://localhost:3306/medibridge_user_dev?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
-    username: ${DB_USERNAME:root}
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:medibridge_user_dev}?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: ${DB_USER:root}
     password: ${DB_PASSWORD:Prakash@1}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:20}
+      minimum-idle: 5
   jpa:
     hibernate:
       ddl-auto: ${DDL_AUTO:update}
@@ -16,7 +19,7 @@ spring:
     host: ${SMTP_HOST:localhost}
     port: ${SMTP_PORT:1025}
     username: ${SMTP_USER:}
-    password: ${SMTP_PASS:}
+    password: ${SMTP_PASSWORD:}
     properties:
       mail:
         smtp:
@@ -39,23 +42,24 @@ management:
       enabled: false
 
 jwt:
-  secret: ${JWT_SECRET:MediBridge2026!Pr0duct1on$ecretK3y#H0sp1talManag3m3ntSyst3m@Secur1ty}
-  expiration: ${JWT_EXPIRATION:86400000}
-  refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000}
+  secret: ${JWT_SECRET:MediBridge2026!Dev$ecretK3y#Tes7Env@Secur1ty}
+  expiration: ${JWT_EXPIRATION_MS:86400000}
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION_MS:604800000}
 
 cors:
   allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:4200,http://localhost:8080}
 
 logging:
   level:
-    root: INFO
+    root: ${LOG_LEVEL:INFO}
     com.medibridge: DEBUG
     org.springframework.web: DEBUG
     org.hibernate.SQL: DEBUG
+
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_PROTOCOL:http}://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/
     register-with-eureka: true
     fetch-registry: true
   instance:
